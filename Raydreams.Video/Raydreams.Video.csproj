@@ -5,4 +5,23 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="AForge" />
+    <None Remove="AForge.Core" />
+    <None Remove="Accord.Video.FFMPEG" />
+    <None Remove="Accord.Video.FFMPEG.x64" />
+    <None Remove="AForge.Video" />
+    <None Remove="FFMediaToolkit" />
+    <None Remove="SkiaSharp" />
+    <None Remove="SharpAvi" />
+    <None Remove="MediaToolkit" />
+    <None Remove="FFmpeg.Native.H264" />
+    <None Remove="SharpAvi.NetStandard" />
+    <None Remove="System.Drawing.Common" />
+    <None Remove="Fast-Bitmap" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="SharpAvi.NetStandard" Version="2.1.2" />
+  </ItemGroup>
 </Project>
