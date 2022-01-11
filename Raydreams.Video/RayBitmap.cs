@@ -112,10 +112,12 @@ namespace Raydreams.Video
 		/// <summary>Take raw image pixels in RGBA format and encode into simple Windows Bitmap</summary>
 		/// <param name="rgba">The raw image bytes in RGBA format</param>
 		/// <returns>Bitmap byte array</returns>
-		public byte[] Encode(byte[] rgba)
+		public byte[] Encode(byte[] rgba, Endianness order = Endianness.Little)
 		{
 			using MemoryStream mem = new MemoryStream();
-            mem.Write( Magic1 );
+            
+			// BMP values are always written Little Endian regardless of platform
+			mem.Write( Magic1 );
             mem.Write( Magic2 );
             mem.WriteLittleEndian( Filesize );
             mem.WriteLittleEndian( Reserved1 );
@@ -146,13 +148,23 @@ namespace Raydreams.Video
 				// backup one row
 				p -= RowBytes;
 
-				// write the pixel BGRA
+				// write the pixel BGRA for Mac, and reverse for Windows
 				for ( int col = 0; col < this.Cols; ++col )
 				{
-					mem.WriteByte( rgba[p + 2] );
-					mem.WriteByte( rgba[p + 1] );
-					mem.WriteByte( rgba[p] );
-					mem.WriteByte( rgba[p + 3] );
+					if ( order == Endianness.Little )
+					{
+						mem.WriteByte( rgba[p] );
+						mem.WriteByte( rgba[p + 1] );
+						mem.WriteByte( rgba[p + 2] );
+						mem.WriteByte( rgba[p + 3] );
+					}
+					else
+					{
+						mem.WriteByte( rgba[p + 2] );
+						mem.WriteByte( rgba[p + 1] );
+						mem.WriteByte( rgba[p] );
+						mem.WriteByte( rgba[p + 3] );
+					}
 
 					// advanced Bytes per pixel
 					p += BytesPerPixel;

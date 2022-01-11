@@ -27,13 +27,14 @@ namespace Raydreams.Video
         {
             var bytes = this.DrawFrame( new SKPoint( 320, 240 ) );
 
-            //RayBitmap bmp = new RayBitmap( _width, _height );
-            //bmp.WriteToFile( bytes, DesktopPath, "ray-test" );
+            RayBitmap bmp = new RayBitmap( _width, _height );
+            bmp.WriteToFile( bytes, DesktopPath, "ray-test" );
 
-            this.WriteAVI();
+            //this.WriteAVI();
         }
 
-        /// <summary></summary>
+        /// <summary>Writes some BMPs to an AVI file</summary>
+        /// <remarks>The written AVI file only works on Windows?</remarks>
         public void WriteAVI()
         {
             var writer = new AviWriter( DesktopPath + "/test.avi" )

@@ -4,8 +4,17 @@ using System.Text;
 
 namespace Raydreams.Video
 {
+	/// <summary>Platform specific order to write bytes</summary>
+	public enum Endianness
+	{
+		/// <summary>LSBss are written first</summary>
+		Little = 0,
+		/// <summary>MSBs are written first</summary>
+		Big = 1
+	}
+
 	/// <summary>Extension to help write specific data types to a Memory stream</summary>
-    /// <remarks>These truncate anything beyond the first 8 LSBs</remarks>
+	/// <remarks>These truncate anything beyond the first 8 LSBs</remarks>
 	public static class StreamExtensions
 	{
 		/// <summary>Write a single char to the stream</summary>
