@@ -161,32 +161,32 @@ namespace Raydreams.Video
 					byte b = rgba[p+2];
 					byte a = rgba[p+3];
 
-					// correct order for Mac AVI files
-					//mem.WriteByte( a );
-					//mem.WriteByte( r );
-					//mem.WriteByte( g );
-					//mem.WriteByte( b );
+                    // correct order for Mac AVI files
+                    mem.WriteByte( a );
+                    mem.WriteByte( r );
+                    mem.WriteByte( g );
+                    mem.WriteByte( b );
 
-					// correct order for Windows AVI files
-					mem.WriteByte( a );
-					mem.WriteByte( b );
-					mem.WriteByte( g );
-					mem.WriteByte( r );
+                    // correct order for Windows AVI files
+                    //mem.WriteByte( a );
+                    //mem.WriteByte( b );
+                    //mem.WriteByte( g );
+                    //mem.WriteByte( r );
 
-					// correct order for Windows BMPs
-					//mem.WriteByte( r );
-					//mem.WriteByte( g );
-					//mem.WriteByte( b );
-					//mem.WriteByte( a );
+                    // correct order for Windows BMPs
+                    //mem.WriteByte( r );
+                    //mem.WriteByte( g );
+                    //mem.WriteByte( b );
+                    //mem.WriteByte( a );
 
-					// correct order for mac BMPs
-					//mem.WriteByte( b );
-					//mem.WriteByte( g );
-					//mem.WriteByte( r );
-					//mem.WriteByte( a );
+                    // correct order for mac BMPs
+                    //mem.WriteByte( b );
+                    //mem.WriteByte( g );
+                    //mem.WriteByte( r );
+                    //mem.WriteByte( a );
 
-					// advanced Bytes per pixel
-					p += BytesPerPixel;
+                    // advanced Bytes per pixel
+                    p += BytesPerPixel;
 				}
 
 				// backup to the start of the row again
