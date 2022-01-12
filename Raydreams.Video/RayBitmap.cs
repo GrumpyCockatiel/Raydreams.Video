@@ -60,7 +60,7 @@ namespace Raydreams.Video
 
 		/* DIB Starts Here BITMAP INFO HEADER 40 bytes */
 
-		/// <summary>Size of the DIB block header - magic number 40</summary>
+		/// <summary>Size of the DIB block header = 40</summary>
 		public int BMISize { get; set; } = 40;
 
 		/// <summary>number of columns in image</summary>
@@ -174,21 +174,16 @@ namespace Raydreams.Video
 					mem.WriteByte( r );
 
 					// correct order for Windows BMPs
-					//if ( this.Order == Endianness.Little )
-					//{
-					//	mem.WriteByte( rgba[p] ); // r
-					//	mem.WriteByte( rgba[p + 1] ); // g
-					//	mem.WriteByte( rgba[p + 2] ); // b
-					// probably goes to the first position
-					//	mem.WriteByte( rgba[p + 3] ); // a
-					//}
-					//else // correct order for mac BMPs
-					//{
-					//mem.WriteByte( rgba[p + 2] ); // b
-					//mem.WriteByte( rgba[p + 1] ); // g
-					//mem.WriteByte( rgba[p] ); // r
-					//mem.WriteByte( rgba[p + 3] ); // a
-					//}
+					//mem.WriteByte( r );
+					//mem.WriteByte( g );
+					//mem.WriteByte( b );
+					//mem.WriteByte( a );
+
+					// correct order for mac BMPs
+					//mem.WriteByte( b );
+					//mem.WriteByte( g );
+					//mem.WriteByte( r );
+					//mem.WriteByte( a );
 
 					// advanced Bytes per pixel
 					p += BytesPerPixel;
