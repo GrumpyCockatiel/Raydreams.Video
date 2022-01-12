@@ -27,10 +27,10 @@ namespace Raydreams.Video
         {
             var bytes = this.DrawFrame( new SKPoint( 320, 240 ) );
 
-            RayBitmap bmp = new RayBitmap( _width, _height );
-            bmp.WriteToFile( bytes, DesktopPath, "ray-test" );
+            //RayBitmap bmp = new RayBitmap( _width, _height ) { Order = Endianness.Big };
+            //bmp.WriteToFile( bytes, DesktopPath, "ray-test" );
 
-            //this.WriteAVI();
+            this.WriteAVI();
         }
 
         /// <summary>Writes some BMPs to an AVI file</summary>
@@ -55,13 +55,17 @@ namespace Raydreams.Video
             // class SharpAvi.KnownFourCCs.Codecs contains FOURCCs for several well-known codecs
             // Uncompressed is the default value, just set it for clarity
             stream.Codec = KnownFourCCs.Codecs.Uncompressed;
+
             // Uncompressed format requires to also specify bits per pixel
             stream.BitsPerPixel = BitsPerPixel.Bpp32;
 
             // write a bunch of frames but only 1000 for now
-            for ( int i = 0; i < _width && i < 1000; ++i )
+            for ( int i = 0; i < _width && i < 250; ++i )
             {
-                var frameData = DrawFrame( new SKPoint( i, _height / 2 ) );
+                byte[] raw = DrawFrame( new SKPoint( i, _height / 2 ) );
+
+                RayBitmap bmp = new RayBitmap( _width, _height ) { Order = Endianness.Big };
+                byte[] frameData = bmp.Encode( raw );
 
                 // write data to a frame
                 stream.WriteFrame( true, // is key frame? (many codecs use concept of key frames, for others - all frames are keys)

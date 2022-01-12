@@ -34,6 +34,10 @@ namespace Raydreams.Video
 
 		#region [ Properties ]
 
+		/// <summary>The Endianness Order determines how pixels are written to the file</summary>
+        /// <remarks>Use Big for Mac and Little for Windows</remarks>
+		public Endianness Order { get; set; } = Endianness.Big;
+
 		/* Info Header is 14 Bytes */
 
 		/// <summary>first magic byte is 'B'</summary>
@@ -112,9 +116,9 @@ namespace Raydreams.Video
 		/// <summary>Take raw image pixels in RGBA format and encode into simple Windows Bitmap</summary>
 		/// <param name="rgba">The raw image bytes in RGBA format</param>
 		/// <returns>Bitmap byte array</returns>
-		public byte[] Encode(byte[] rgba, Endianness order = Endianness.Little)
+		public byte[] Encode(byte[] rgba)
 		{
-			using MemoryStream mem = new MemoryStream();
+			using MemoryStream mem = new MemoryStream(this.Filesize);
             
 			// BMP values are always written Little Endian regardless of platform
 			mem.Write( Magic1 );
@@ -151,20 +155,32 @@ namespace Raydreams.Video
 				// write the pixel BGRA for Mac, and reverse for Windows
 				for ( int col = 0; col < this.Cols; ++col )
 				{
-					if ( order == Endianness.Little )
-					{
-						mem.WriteByte( rgba[p] );
-						mem.WriteByte( rgba[p + 1] );
-						mem.WriteByte( rgba[p + 2] );
-						mem.WriteByte( rgba[p + 3] );
-					}
-					else
-					{
-						mem.WriteByte( rgba[p + 2] );
-						mem.WriteByte( rgba[p + 1] );
-						mem.WriteByte( rgba[p] );
-						mem.WriteByte( rgba[p + 3] );
-					}
+					byte r = rgba[p];
+					byte g = rgba[p+1];
+					byte b = rgba[p+2];
+					byte a = rgba[p+3];
+
+					// right order for AVI files which follows Little Endian
+					mem.WriteByte( a );
+					mem.WriteByte( r );
+					mem.WriteByte( g );
+					mem.WriteByte( b );
+
+					//if ( this.Order == Endianness.Little )
+					//{
+					//	mem.WriteByte( rgba[p] ); // r
+					//	mem.WriteByte( rgba[p + 1] ); // g
+					//	mem.WriteByte( rgba[p + 2] ); // b
+					// probably goes to the first position
+					//	mem.WriteByte( rgba[p + 3] ); // a
+					//}
+					//else
+					//{
+					//mem.WriteByte( rgba[p + 2] ); // b
+					//mem.WriteByte( rgba[p + 1] ); // g
+					//mem.WriteByte( rgba[p] ); // r
+					//mem.WriteByte( rgba[p + 3] ); // a
+					//}
 
 					// advanced Bytes per pixel
 					p += BytesPerPixel;

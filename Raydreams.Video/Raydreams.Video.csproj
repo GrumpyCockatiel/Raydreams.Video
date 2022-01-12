@@ -19,6 +19,7 @@
     <None Remove="SharpAvi.NetStandard" />
     <None Remove="System.Drawing.Common" />
     <None Remove="Fast-Bitmap" />
+    <None Remove="RtspClientSharp" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="2.80.3" />

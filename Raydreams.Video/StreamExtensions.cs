@@ -110,7 +110,7 @@ namespace Raydreams.Video
 		/// <param name="value">The value to write</param>
 		public static void WriteLittleEndian( this Stream stream, int value )
 		{
-			stream.WriteByte( (byte)( ( value & 0x000000FF ) >> 0 ) );
+			stream.WriteByte( (byte)( value & 0x000000FF ) );
 			stream.WriteByte( (byte)( ( value >> 8 ) & 0x000000FF ) );
 			stream.WriteByte( (byte)( ( value >> 16 ) & 0x000000FF ) );
 			stream.WriteByte( (byte)( ( value >> 24 ) & 0x000000FF ) );
