@@ -18,8 +18,9 @@ namespace Raydreams.Video
 	public static class StreamExtensions
 	{
 		/// <summary>Write a single char to the stream</summary>
-        /// <param name="stream"></param>
-        /// <param name="value"></param>
+		/// <param name="stream"></param>
+		/// <param name="value"></param>
+		/// <remarks>Characters are truncated to the first 8 bits</remarks>
 		public static void Write( this Stream stream, char value )
         {
 			stream.WriteByte( (byte)value );
@@ -28,6 +29,7 @@ namespace Raydreams.Video
 		/// <summary>Writes the characters from an ASCII string into the specified stream</summary>
 		/// <param name="stream">The stream to write the data to.</param>
 		/// <param name="value">The value to write</param>
+		/// <remarks>Characters are truncated to the first 8 bits</remarks>
 		public static void Write( this Stream stream, string value )
 		{
 			foreach ( char c in value )
@@ -69,7 +71,7 @@ namespace Raydreams.Video
 		{
 			// write MSBs first
 			stream.WriteByte( (byte)( value >> 8 ) );
-			stream.WriteByte( (byte)( value >> 0 ) );
+			stream.WriteByte( (byte)value );
 		}
 
 		/// <summary>Writes a 16bit signed integer in big-endian format.</summary>

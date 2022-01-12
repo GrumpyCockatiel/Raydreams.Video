@@ -155,17 +155,25 @@ namespace Raydreams.Video
 				// write the pixel BGRA for Mac, and reverse for Windows
 				for ( int col = 0; col < this.Cols; ++col )
 				{
+					// grab the current channels
 					byte r = rgba[p];
 					byte g = rgba[p+1];
 					byte b = rgba[p+2];
 					byte a = rgba[p+3];
 
-					// right order for AVI files which follows Little Endian
-					mem.WriteByte( a );
-					mem.WriteByte( r );
-					mem.WriteByte( g );
-					mem.WriteByte( b );
+					// correct order for Mac AVI files
+					//mem.WriteByte( a );
+					//mem.WriteByte( r );
+					//mem.WriteByte( g );
+					//mem.WriteByte( b );
 
+					// correct order for Windows AVI files
+					mem.WriteByte( a );
+					mem.WriteByte( b );
+					mem.WriteByte( g );
+					mem.WriteByte( r );
+
+					// correct order for Windows BMPs
 					//if ( this.Order == Endianness.Little )
 					//{
 					//	mem.WriteByte( rgba[p] ); // r
@@ -174,7 +182,7 @@ namespace Raydreams.Video
 					// probably goes to the first position
 					//	mem.WriteByte( rgba[p + 3] ); // a
 					//}
-					//else
+					//else // correct order for mac BMPs
 					//{
 					//mem.WriteByte( rgba[p + 2] ); // b
 					//mem.WriteByte( rgba[p + 1] ); // g

@@ -25,11 +25,12 @@ namespace Raydreams.Video
         /// <summary>Bootstrap and Run the app</summary>
         public void Run()
         {
-            var bytes = this.DrawFrame( new SKPoint( 320, 240 ) );
-
+            // to test writing a single Windows BMP file
+            //var bytes = this.DrawFrame( new SKPoint( 320, 240 ) );
             //RayBitmap bmp = new RayBitmap( _width, _height ) { Order = Endianness.Big };
             //bmp.WriteToFile( bytes, DesktopPath, "ray-test" );
 
+            // write an AVI movie
             this.WriteAVI();
         }
 
@@ -39,7 +40,7 @@ namespace Raydreams.Video
         {
             var writer = new AviWriter( DesktopPath + "/test.avi" )
             {
-                FramesPerSecond = 8,
+                FramesPerSecond = 30,
                 // Emitting AVI v1 index in addition to OpenDML index (AVI v2)
                 // improves compatibility with some software, including 
                 // standard Windows programs like Media Player and File Explorer
