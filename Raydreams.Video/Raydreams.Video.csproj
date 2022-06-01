@@ -20,9 +20,15 @@
     <None Remove="System.Drawing.Common" />
     <None Remove="Fast-Bitmap" />
     <None Remove="RtspClientSharp" />
+    <None Remove="Model\" />
+    <None Remove="Mocks\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="SharpAvi.NetStandard" Version="2.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="Tests\" />
   </ItemGroup>
 </Project>

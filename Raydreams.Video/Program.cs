@@ -3,6 +3,8 @@ using System.IO;
 using SkiaSharp;
 using SharpAvi.Output;
 using SharpAvi;
+using Raydreams.Video.Model;
+using Raydreams.Video.Tests;
 
 namespace Raydreams.Video
 {
@@ -17,10 +19,14 @@ namespace Raydreams.Video
         static void Main( string[] args )
         {
             MovieMaker app = new MovieMaker();
+            app.CurrentScene = Mocks.Scene1();
             app.Run();
 
             Console.WriteLine( "Done Writing Movie" );
         }
+
+        /// <summary></summary>
+        public Scene CurrentScene { get; set; }
 
         /// <summary>Bootstrap and Run the app</summary>
         public void Run()
@@ -40,7 +46,7 @@ namespace Raydreams.Video
         {
             var writer = new AviWriter( DesktopPath + "/test.avi" )
             {
-                FramesPerSecond = 30,
+                FramesPerSecond = 8,
                 // Emitting AVI v1 index in addition to OpenDML index (AVI v2)
                 // improves compatibility with some software, including 
                 // standard Windows programs like Media Player and File Explorer
@@ -82,39 +88,48 @@ namespace Raydreams.Video
         /// <summary>Draw a single frame for now which is a shape on a white background</summary>
         /// <param name="loc">Postisition to draw the shape</param>
         /// <returns>Raw pixel bytes in the RGBA sequence</returns>
-        public byte[] DrawFrame(SKPoint loc)
+        public byte[] DrawFrame(Frame frame, SKColor background )
         {
-            SKPaint paint = new SKPaint()
+            using SKPaint fill = new SKPaint()
             {
                 IsAntialias = true,
-                Color = SKColors.Red,
                 Style = SKPaintStyle.Fill,
                 // when true the path is ONLY stroked
                 IsStroke = false,
                 StrokeWidth = 0
             };
 
+            using SKPaint stroke = new SKPaint()
+            {
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke,
+                // when true the path is ONLY stroked
+                IsStroke = true,
+                StrokeWidth = 1
+            };
+
             SKImageInfo info = new SKImageInfo( _width, _height, SKColorType.Rgba8888 );
             SKSurface surface = SKSurface.Create( info );
 
-            surface.Canvas.Clear( SKColors.White );
-            surface.Canvas.DrawPath( Shapes.Star( 100, loc, 0 ), paint );
+            // start a new surface
+            surface.Canvas.Clear( background );
+
+            foreach (AssetRender ass in frame.Entites )
+            {
+                // get the original asset
+                Asset original = this.CurrentScene.GetAsset( ass.ID );
+
+                // foreach path in the asset
+                foreach ( SKPath path in original.Paths )
+                {
+                    fill.Color = original.FillColor;
+                    path.Transform( SKMatrix.CreateRotationDegrees( ass.Rotation ) );
+                    surface.Canvas.DrawPath( path, fill );
+                }
+            }
 
             // get RGBA Pixels
             return SKBitmap.FromImage( surface.Snapshot() ).Bytes;
-        }
-
-        /// <summary>Test just writing bytes to a file</summary>
-        public void WriteBytes()
-        {
-            using MemoryStream mem = new MemoryStream();
-
-            short a = 1;
-            int b = 2;
-
-            mem.WriteBigEndian( a );
-            mem.WriteBigEndian( b );
-            File.WriteAllBytes( DesktopPath + "/test.bin", mem.ToArray() );
         }
 
     }

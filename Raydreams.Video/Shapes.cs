@@ -6,8 +6,19 @@ namespace Raydreams.Video
 	/// <summary>Pre generates the path for test shapes</summary>
     public static class Shapes
     {
-		/// <summary>Generate points for a star</summary>
-		public static SKPath Star( float radius, SKPoint offset, float rotation )
+        /// <summary>Creates a square inscribed inside the spefified circle of radius</summary>
+        public static SKPath Circle( float radius, SKPoint offset, float rotation = 0 )
+        {
+            SKPath path = new SKPath() { FillType = SKPathFillType.EvenOdd };
+            path.AddCircle( 0, 0, radius, SKPathDirection.Clockwise );
+            path.Close();
+
+            path.Transform( SKMatrix.CreateTranslation( offset.X, offset.Y ) );
+            return path;
+        }
+
+        /// <summary>Generate points for a star centered around an origin</summary>
+        public static SKPath Star( float radius, SKPoint offset, float rotation )
 		{
 			return Star( radius, radius / 2.5F, offset, rotation );
 		}
